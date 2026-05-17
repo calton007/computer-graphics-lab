@@ -1,9 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//�������ƣ�E5 �����ͶӰ+����ͼ+�����ͶӰ��ת
-//���к���ʾ����ͼ�������ͶӰ������������������������ͶӰ��ʼ��ת
-//���뻷����Microsoft Visual Studio Ultimate 2013 EasyX_2014������
-//���ߣ���۲�<1206020120>
-//����޸�:2015-11-6
+//程序名称：E5 正轴测投影+三视图+正轴测投影旋转
+//运行后，显示三视图和正轴测投影，按下任意键后，清屏，正轴测投影开始旋转
+//最后修改:2015-11-6
 
 #include <graphics.h>      
 #include <conio.h>
@@ -15,7 +13,7 @@ const int MATRIX_SIZE = 4;
 class Matrix{
 public:
 	float unit[MATRIX_SIZE][MATRIX_SIZE];
-	Matrix(int i)//���ɶԽǾ��󣬻��������
+	Matrix(int i)//生成对角矩阵，或者零矩阵
 	{
 		if (i == 1)
 		{
@@ -37,7 +35,7 @@ public:
 				}
 		}
 	}
-	void reset()//����Ϊ�ԽǾ���
+	void reset()//重置为对角矩阵
 	{
 		for (int i = 0; i < MATRIX_SIZE; i++)
 			for (int j = 0; j < MATRIX_SIZE; j++)
@@ -48,7 +46,7 @@ public:
 				unit[i][j] = 0;
 			}
 	}
-	Matrix operator *(Matrix a)//���������
+	Matrix operator *(Matrix a)//运算符重载
 	{
 		int i, j, k;
 		Matrix t(0);
@@ -88,7 +86,7 @@ public:
 				t.p[i] += (p[j] * m.unit[j][i]);
 			}
 		}
-		if (t.p[3] != 1) //��λ�
+		if (t.p[3] != 1) //齐次化
 		{
 			t.p[0] /= t.p[3];
 			t.p[1] /= t.p[3];
@@ -97,7 +95,7 @@ public:
 		return t;
 	}
 };
-//����ͼ��
+//绘制图案
 void draw(const Point point[], const int edge[][2])
 {
 	for (int i = 0; i < 27; i++)
@@ -112,7 +110,7 @@ int edge[27][2] = { { 1, 2 }, { 2, 3 }, { 3, 4 }, { 4, 5 }, { 5, 6 }, { 6, 7 }, 
 { 15, 16 }, { 16, 17 }, { 17, 18 }, { 1, 10 }, { 2, 13 }, { 3, 14 }, { 4, 19 },
 { 6, 19 }, { 8, 17 }, { 9, 18 }, { 11, 18 }, { 12, 15 }, { 16, 19 } };
 
-//�����ͶӰ
+//正轴测投影
 void projection()
 {
 	Point temp[19];
@@ -121,37 +119,37 @@ void projection()
 		temp[i] = point[i];
 	}
 	Matrix m(1),t(1);
-	//��z����ת
+	//绕z轴旋转
 	m.unit[0][0] = 0.707;
 	m.unit[0][1] = 0.707;
 	m.unit[1][0] = -0.707;
 	m.unit[1][1] = 0.707;
-	//��x����ת
+	//绕x轴旋转
 	t.unit[1][1] = 0.816;
 	t.unit[1][2] = -0.577;
 	t.unit[2][1] = 0.577;
 	t.unit[2][2] = 0.816;
 	m = m*t;
 	t.reset();
-	//ͶӰ��XOZƽ��
+	//投影到XOZ平面
 	t.unit[1][1] = 0;
 	m = m*t;
 	t.reset();
 
-	//ƽ��
+	//平移
 	t.unit[3][2] = -50;
 	t.unit[3][0] = -70;
 	m = m*t;
 	t.reset();
 
-	//�Ŵ�
+	//放大
 	t.unit[0][0] = 2;
 	t.unit[1][1] = 2;
 	t.unit[2][2] = 2;
 	m = m*t;
 	t.reset();
 
-	//��ת180��
+	//旋转180°
 	t.unit[0][0] = t.unit[2][2] = -1;
 	m = m*t;	
 
@@ -168,19 +166,19 @@ void front()
 	}
 	Matrix m(1),t(1);
 
-	//ͶӰ��XOZƽ��
+	//投影到XOZ平面
 	t.unit[1][1] = 0;
 	m = m*t;
 	t.reset();
 
-	//�Ŵ�
+	//放大
 	t.unit[0][0] = 3;
 	t.unit[1][1] = 3;
 	t.unit[2][2] = 3;
 	m = m*t;
 	t.reset();
 
-	//��ת180��
+	//旋转180°
 	t.unit[0][0] = t.unit[2][2] = -1;
 	m = m*t;
 
@@ -197,12 +195,12 @@ void vertical()
 		temp[i] = point[i];
 	}
 	
-	//ͶӰ��XOYƽ��
+	//投影到XOY平面
 	t.unit[2][2] = 0;
 	m = m*t;
 	t.reset();
 
-	//��X�Ḻ����ת90��
+	//绕X轴负向旋转90°
 	t.unit[1][1] = 0;
 	t.unit[1][2] = -1;
 	t.unit[2][1] = 1;
@@ -210,18 +208,18 @@ void vertical()
 	m = m*t;
 	t.reset();
 
-	//ƽ��
+	//平移
 	t.unit[3][2] = -10;
 	m = m*t;
 
-	//�Ŵ�
+	//放大
 	t.unit[0][0] = 3;
 	t.unit[1][1] = 3;
 	t.unit[2][2] = 3;
 	m = m*t;
 	t.reset();
 
-	//��ת180��
+	//旋转180°
 	t.unit[0][0] = t.unit[2][2] = -1;
 	m = m*t;
 
@@ -237,12 +235,12 @@ void side()
 	{
 		temp[i] = point[i];
 	}
-	//ͶӰ��YOZƽ��
+	//投影到YOZ平面
 	t.unit[0][0] = 0;
 	m = m*t;
 	t.reset();
 
-	//��Z��������ת90��
+	//绕Z轴正向旋转90°
 	t.unit[0][0] = 0;
 	t.unit[0][1] = 1;
 	t.unit[1][0] = -1;
@@ -250,18 +248,18 @@ void side()
 	m = m*t;
 	t.reset();
 	
-	//ƽ��
+	//平移
 	t.unit[3][0] = -10;
 	m = m*t;
 
-	//�Ŵ�
+	//放大
 	t.unit[0][0] = 3;
 	t.unit[1][1] = 3;
 	t.unit[2][2] = 3;
 	m = m*t;
 	t.reset();
 
-	//��ת180��
+	//旋转180°
 	t.unit[0][0] = t.unit[2][2] = -1;
 	m = m*t;
 
@@ -282,13 +280,13 @@ void rotate()
 	}
 	Matrix m(1), t(1);
 
-	//��z����ת
+	//绕z轴旋转
 	m.unit[0][0] = 0.707;
 	m.unit[0][1] = 0.707;
 	m.unit[1][0] = -0.707;
 	m.unit[1][1] = 0.707;
 
-	//��x����ת
+	//绕x轴旋转
 	t.unit[1][1] = 0.816;
 	t.unit[1][2] = -0.577;
 	t.unit[2][1] = 0.577;
@@ -296,35 +294,35 @@ void rotate()
 	m = m*t;
 	t.reset();
 
-	//ͶӰ��XOZƽ��
+	//投影到XOZ平面
 	t.unit[1][1] = 0;
 	m = m*t;
 	t.reset();
 
-	//�Ŵ�
+	//放大
 	t.unit[0][0] = 2;
 	t.unit[1][1] = 2;
 	t.unit[2][2] = 2;
 	m = m*t;
 	t.reset();
 
-	//��ת180��
+	//旋转180°
 	t.unit[0][0] = t.unit[2][2] = -1;
 	m = m*t;
 
 	Matrix r(1);
-	r.unit[0][1] = cos(0.03);
+	r.unit[0][0] = cos(0.03);
 	r.unit[0][1] = sin(0.03);
 	r.unit[1][0] = -sin(0.03);
 	r.unit[1][1] = cos(0.03);
-	//mΪ�����ͶӰ�任����rΪ��ת����
-	while (1)
+	//m为正轴测投影变换矩阵，r为旋转矩阵
+	while (is_graph_open())
 	{
 		cleardevice();
 		for (int i = 0; i < 19; i++)
-			temp[i] = temp[i] * r;	//ԭʼͼ����ת
+			temp[i] = temp[i] * r;	//原始图形旋转
 		for (int i = 0; i < 19; i++)
-			temp2[i] = temp[i] * m ; //�������ͶӰ
+			temp2[i] = temp[i] * m ; //作正轴测投影
 		draw(temp2, edge);
 		Sleep(50);
 	}		
@@ -336,17 +334,15 @@ int main()
 	setbkcolor(WHITE);
 	cleardevice();
 	setlinecolor(BLACK);
-	setorigin(320, 240);//����ԭ������Ϊ��Ļ����
-	projection();//�����ͶӰ
-	front();//����ͼ
-	vertical();//����ͼ
-	side();//����ͼ
+	setorigin(320, 240);//设置原点坐标为屏幕中心
+	projection();//正轴测投影
+	front();//主视图
+	vertical();//俯视图
+	side();//侧视图
 	_getch();
 
-	rotate();//�����ͶӰ��ת
+	rotate();//正轴测投影旋转
 
-	_getch();
 	closegraph();
-	system("pause");
 	return 0;
 }

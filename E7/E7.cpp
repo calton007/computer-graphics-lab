@@ -1,11 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//³ÌĞòÃû³Æ£ºE7 BÑùÌõÇúÏß
-//Êó±ê×ó¼üµã»÷Ñ¡Ôñµã£¬Êó±êÓÒ¼üµã»÷»æÍ¼£¬Êó±ê×ó¼üË«»÷Çå¿Õ
-//±àÒë»·¾³£ºMicrosoft Visual Studio Ultimate 2013 EasyX_2014¶¬ÖÁ°æ
-//×÷Õß£ºÀî¹Û²¨<1206020120>
-//×îºóĞŞ¸Ä:2015-11-21
+//ç¨‹åºåç§°ï¼šE7 Bæ ·æ¡æ›²çº¿
+//é¼ æ ‡å·¦é”®ç‚¹å‡»é€‰æ‹©ç‚¹ï¼Œé¼ æ ‡å³é”®ç‚¹å‡»ç»˜å›¾ï¼Œé¼ æ ‡å·¦é”®åŒå‡»æ¸…ç©º
+//æœ€åä¿®æ”¹:2015-11-21
 #include <graphics.h>
 #include <iostream>
+#include <vector>
 struct Point
 {
 	float x;
@@ -13,26 +12,26 @@ struct Point
 };
 struct PointGroup
 {
-	Point *p;
-	int num;
+	std::vector<Point> p;
 };
 PointGroup pg;
-int index = 0;
 void B_spline()
 {
 	float a0, a1, a2, a3, b0, b1, b2, b3;
 	int k, x, y;
-	float i, t, dt, n = pg.num;
+	if (pg.p.size() < 4)
+		return;
+	float i, t, dt, n = static_cast<float>(pg.p.size());
 	setlinecolor(BLACK);
 	dt = 1 / n;
-	for (k = 0; k < pg.num; k++)
+	for (k = 0; k < static_cast<int>(pg.p.size()); k++)
 	{
 		if (k == 0)
 			moveto(pg.p[k].x, pg.p[k].y);
 		lineto(pg.p[k].x, pg.p[k].y);
 	}
 	setlinecolor(BLUE);
-	for (k = 0; k < pg.num - 3; k++)
+	for (k = 0; k < static_cast<int>(pg.p.size()) - 3; k++)
 	{
 		/*
 		-1	 3	-3	 1
@@ -62,35 +61,31 @@ void B_spline()
 		}
 	}
 }
-void main()
+int main()
 {
-	MOUSEMSG m;		// ¶¨ÒåÊó±êÏûÏ¢
+	MOUSEMSG m;		// å®šä¹‰é¼ æ ‡æ¶ˆæ¯
 	initgraph(640, 480);
 	setbkcolor(WHITE);
 	setfillcolor(BLACK);
 	cleardevice();	
-	pg.p = new Point[50];
-	while (true)
+	while (is_graph_open())
 	{
 		m = GetMouseMsg();
+		if (m.uMsg == WM_CLOSE)
+			break;
 		if (m.uMsg == WM_LBUTTONDOWN)
 		{
-			pg.p[index].x = m.x;
-			pg.p[index].y = m.y;
-			index++;
-			pg.num++;
+			pg.p.push_back(Point{ static_cast<float>(m.x), static_cast<float>(m.y) });
 			solidcircle(m.x, m.y, 2);
 		}
 		if (m.uMsg == WM_RBUTTONDOWN)
 			B_spline();
 		if (m.uMsg == WM_LBUTTONDBLCLK)
 		{
-			index = 0;
-			pg.num = 0;
+			pg.p.clear();
 			cleardevice();
 		}
 	}
-	delete [] pg.p;
-	system("pause");
 	closegraph();
+	return 0;
 }

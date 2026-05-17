@@ -1,9 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//³ÌĞòÃû³Æ£ºE6 Á¢·½ÌåµÄÕıÖá²âÏûÒş
-//ÔËĞĞºó£¬ÏÔÊ¾Á¢·½ÌåµÄÕıÖá²â£¬°´ÏÂÈÎÒâ¼üºó£¬¿ªÊ¼Ğı×ª
-//±àÒë»·¾³£ºMicrosoft Visual Studio Ultimate 2013 EasyX_2014¶¬ÖÁ°æ
-//×÷Õß£ºÀî¹Û²¨<1206020120>
-//×îºóĞŞ¸Ä:2015-11-19
+//ç¨‹åºåç§°ï¼šE6 ç«‹æ–¹ä½“çš„æ­£è½´æµ‹æ¶ˆéš
+//è¿è¡Œåï¼Œæ˜¾ç¤ºç«‹æ–¹ä½“çš„æ­£è½´æµ‹ï¼ŒæŒ‰ä¸‹ä»»æ„é”®åï¼Œå¼€å§‹æ—‹è½¬
+//æœ€åä¿®æ”¹:2015-11-19
 
 #include <graphics.h>      
 #include <conio.h>
@@ -15,7 +13,7 @@ const int MATRIX_SIZE = 4;
 class Matrix{
 public:
 	float unit[MATRIX_SIZE][MATRIX_SIZE];
-	Matrix(int i)//Éú³É¶Ô½Ç¾ØÕó£¬»òÕßÁã¾ØÕó
+	Matrix(int i)//ç”Ÿæˆå¯¹è§’çŸ©é˜µï¼Œæˆ–è€…é›¶çŸ©é˜µ
 	{
 		if (i == 1)
 		{
@@ -37,7 +35,7 @@ public:
 				}
 		}
 	}
-	void reset()//ÖØÖÃÎª¶Ô½Ç¾ØÕó
+	void reset()//é‡ç½®ä¸ºå¯¹è§’çŸ©é˜µ
 	{
 		for (int i = 0; i < MATRIX_SIZE; i++)
 			for (int j = 0; j < MATRIX_SIZE; j++)
@@ -48,7 +46,7 @@ public:
 				unit[i][j] = 0;
 			}
 	}
-	Matrix operator *(Matrix a)//ÔËËã·ûÖØÔØ
+	Matrix operator *(Matrix a)//è¿ç®—ç¬¦é‡è½½
 	{
 		int i, j, k;
 		Matrix t(0);
@@ -88,7 +86,7 @@ public:
 				t.p[i] += (p[j] * m.unit[j][i]);
 			}
 		}
-		if (t.p[3] != 1) //Æë´Î»¯
+		if (t.p[3] != 1) //é½æ¬¡åŒ–
 		{
 			t.p[0] /= t.p[3];
 			t.p[1] /= t.p[3];
@@ -99,9 +97,9 @@ public:
 };
 class Plane{
 public:
-	int begin;	//ÆğÊ¼Î»ÖÃ
-	int end;	//ÖÕÖ¹Î»ÖÃ
-	bool visible;	//ÊÇ·ñ¿É¼û
+	int begin;	//èµ·å§‹ä½ç½®
+	int end;	//ç»ˆæ­¢ä½ç½®
+	bool visible;	//æ˜¯å¦å¯è§
 	Plane(int b, int e, bool v)
 	{
 		begin = b;  
@@ -109,13 +107,13 @@ public:
 		visible = v;	
 	}
 };
-//»æÖÆÍ¼°¸
+//ç»˜åˆ¶å›¾æ¡ˆ
 
-//¶¥µã±í
+//é¡¶ç‚¹è¡¨
 Point point[8] = { Point(0, 0, 0, 1), Point(10, 0, 0, 1), Point(0, 10, 0, 1), Point(10, 10, 0, 1), Point(0, 0, 10, 1), Point(10, 0, 10, 1), Point(0, 10, 10, 1), Point(10, 10, 10, 1) };
-//Ãæ±í
+//é¢è¡¨
 Plane plane[6] = { Plane(0, 4, true), Plane(5, 9, true), Plane(10, 14, true), Plane(15, 19, true), Plane(20, 24, true), Plane(25, 29, true) };
-//»·±í
+//ç¯è¡¨
 int edge[30] = { 1, 3, 4, 2, 1, 5, 6, 8, 7, 5, 1, 2, 6, 5, 1, 3, 7, 8, 4, 3, 1, 5, 7, 3, 1, 2, 4, 8, 6, 2 };
 
 void draw(const Point point[], const int edge[])
@@ -139,16 +137,16 @@ void judge(Plane plane[], const Point point[])
 	float e;
 	for (int i = 0; i < 6; i++)
 	{
-		//¼ÆËãÆ½ÃæÉÏµÄÁ½¸öÏòÁ¿
-		//plane[].begin£ºÆ½ÃæµÄÆğµãÔÚ»·±íµÄÎ»ÖÃ£¬
-		//edge[]£ºÈ¡³öµãµÄ×ø±êµÄÎ»ÖÃ
-		//µã´Ó1¿ªÊ¼±àºÅ£¬ËùÒÔÈ¡µÃÊ±ºòÒª¼õÈ¥1
-		//point[].p[0]ÎªµãµÄx×ø±ê£¬point[].p[2]ÎªµãµÄz×ø±ê
+		//è®¡ç®—å¹³é¢ä¸Šçš„ä¸¤ä¸ªå‘é‡
+		//plane[].beginï¼šå¹³é¢çš„èµ·ç‚¹åœ¨ç¯è¡¨çš„ä½ç½®ï¼Œ
+		//edge[]ï¼šå–å‡ºç‚¹çš„åæ ‡çš„ä½ç½®
+		//ç‚¹ä»1å¼€å§‹ç¼–å·ï¼Œæ‰€ä»¥å–å¾—æ—¶å€™è¦å‡å»1
+		//point[].p[0]ä¸ºç‚¹çš„xåæ ‡ï¼Œpoint[].p[2]ä¸ºç‚¹çš„zåæ ‡
 		x1 = point[edge[plane[i].begin + 1] - 1].p[0] - point[edge[plane[i].begin] - 1].p[0];
 		z1 = point[edge[plane[i].begin + 1] - 1].p[2] - point[edge[plane[i].begin] - 1].p[2];
 		x2 = point[edge[plane[i].end - 1] - 1].p[0] - point[edge[plane[i].end] - 1].p[0];
 		z2 = point[edge[plane[i].end - 1] - 1].p[2] - point[edge[plane[i].end] - 1].p[2];
-		//Çó·¨ÏòÁ¿ÓëyÖá¼Ğ½Ç
+		//æ±‚æ³•å‘é‡ä¸yè½´å¤¹è§’
 		e = (x1*z2) - (x2*z1);
 		if (e >= 0)
 			plane[i].visible = true;
@@ -164,12 +162,12 @@ void projection()
 		temp[i] = point[i];
 	}
 	Matrix m(1), t(1);
-	//ÈÆzÖáĞı×ª
+	//ç»•zè½´æ—‹è½¬
 	m.unit[0][0] = 0.707;
 	m.unit[0][1] = 0.707;
 	m.unit[1][0] = -0.707;
 	m.unit[1][1] = 0.707;
-	//ÈÆxÖáĞı×ª
+	//ç»•xè½´æ—‹è½¬
 	t.unit[1][1] = 0.816;
 	t.unit[1][2] = -0.577;
 	t.unit[2][1] = 0.577;
@@ -177,23 +175,23 @@ void projection()
 	m = m*t;
 	t.reset();
 
-	//Í¶Ó°µ½XOZÆ½Ãæ
+	//æŠ•å½±åˆ°XOZå¹³é¢
 	t.unit[1][1] = 0;
 	m = m*t;
 	t.reset();
 
-	//·Å´ó
+	//æ”¾å¤§
 	t.unit[0][0] = 10;
 	t.unit[1][1] = 10;
 	t.unit[2][2] = 10;
 	m = m*t;
 	t.reset();
 
-	//×ø±ê±ä»»
+	//åæ ‡å˜æ¢
 	for (int i = 0; i < 8; i++)
 		temp[i] = temp[i] * m;
 	
-	//ÅĞ¶ÏÃæÊÇ·ñ¿É¼û
+	//åˆ¤æ–­é¢æ˜¯å¦å¯è§
 	judge(plane, temp);
 	draw(temp, edge);
 }
@@ -211,13 +209,13 @@ void rotate()
 	}
 	Matrix m(1), t(1);
 
-	//ÈÆzÖáĞı×ª
+	//ç»•zè½´æ—‹è½¬
 	m.unit[0][0] = 0.707;
 	m.unit[0][1] = 0.707;
 	m.unit[1][0] = -0.707;
 	m.unit[1][1] = 0.707;
 
-	//ÈÆxÖáĞı×ª
+	//ç»•xè½´æ—‹è½¬
 	t.unit[1][1] = 0.816;
 	t.unit[1][2] = -0.577;
 	t.unit[2][1] = 0.577;
@@ -225,12 +223,12 @@ void rotate()
 	m = m*t;
 	t.reset();
 
-	//Í¶Ó°µ½XOZÆ½Ãæ
+	//æŠ•å½±åˆ°XOZå¹³é¢
 	t.unit[1][1] = 0;
 	m = m*t;
 	t.reset();
 
-	//·Å´ó
+	//æ”¾å¤§
 	t.unit[0][0] = 10;
 	t.unit[1][1] = 10;
 	t.unit[2][2] = 10;
@@ -239,20 +237,20 @@ void rotate()
 
 
 	Matrix r(1);
-	r.unit[0][1] = cos(0.03);
+	r.unit[0][0] = cos(0.03);
 	r.unit[0][1] = sin(0.03);
 	r.unit[1][0] = -sin(0.03);
 	r.unit[1][1] = cos(0.03);
-	//mÎªÕıÖá²âÍ¶Ó°±ä»»¾ØÕó£¬rÎªĞı×ª¾ØÕó
+	//mä¸ºæ­£è½´æµ‹æŠ•å½±å˜æ¢çŸ©é˜µï¼Œrä¸ºæ—‹è½¬çŸ©é˜µ
 
-	while (1)
+	while (is_graph_open())
 	{
 		cleardevice();
 		for (int i = 0; i < 8; i++)
-			temp[i] = temp[i] * r;	//Ô­Ê¼Í¼ĞÎĞı×ª
+			temp[i] = temp[i] * r;	//åŸå§‹å›¾å½¢æ—‹è½¬
 		for (int i = 0; i < 8; i++)
-			temp2[i] = temp[i] * m; //×÷ÕıÖá²âÍ¶Ó°
-		//ÅĞ¶Ï¿É¼ûĞÔ
+			temp2[i] = temp[i] * m; //ä½œæ­£è½´æµ‹æŠ•å½±
+		//åˆ¤æ–­å¯è§æ€§
 		judge(plane, temp2);
 		draw(temp2, edge);
 		Sleep(50);
@@ -265,15 +263,13 @@ int main()
 	setbkcolor(WHITE);
 	cleardevice();
 	setlinecolor(BLACK);
-	setorigin(320, 240);//ÉèÖÃÔ­µã×ø±êÎªÆÁÄ»ÖĞĞÄ
-	projection();//ÕıÖá²âÍ¶Ó°
+	setorigin(320, 240);//è®¾ç½®åŸç‚¹åæ ‡ä¸ºå±å¹•ä¸­å¿ƒ
+	projection();//æ­£è½´æµ‹æŠ•å½±
 
 	_getch();
 
-	rotate();//ÕıÖá²âÍ¶Ó°Ğı×ª
+	rotate();//æ­£è½´æµ‹æŠ•å½±æ—‹è½¬
 
-	_getch();
 	closegraph();
-	system("pause");
 	return 0;
 }

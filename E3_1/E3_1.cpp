@@ -1,9 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//³ÌĞòÃû³Æ£ºE3_1 Ïß¶Î²Ã¼ô
-//ÏÈ»æÖÆÒ»¸ö20±ßµÄÍ¼ĞÎ£¨À¶É«£©£¬ÓÃÊó±êµã»÷Á½µãÈ·¶¨²Ã¼ôµÄ¾ØĞÎ¿ò£¬¾ØĞÎ¿òÄÚµÄÏß¶ÎÆ½ÒÆ²¢ÏÔÊ¾ÎªÂÌÉ«
-//±àÒë»·¾³£ºMicrosoft Visual Studio Ultimate 2013 EasyX_2014¶¬ÖÁ°æ
-//×÷Õß£ºÀî¹Û²¨<1206020120>
-//×îºóĞŞ¸Ä:2015-10-20
+//ç¨‹åºåç§°ï¼šE3_1 çº¿æ®µè£å‰ª
+//å…ˆç»˜åˆ¶ä¸€ä¸ª20è¾¹çš„å›¾å½¢ï¼ˆè“è‰²ï¼‰ï¼Œç”¨é¼ æ ‡ç‚¹å‡»ä¸¤ç‚¹ç¡®å®šè£å‰ªçš„çŸ©å½¢æ¡†ï¼ŒçŸ©å½¢æ¡†å†…çš„çº¿æ®µå¹³ç§»å¹¶æ˜¾ç¤ºä¸ºç»¿è‰²
+//æœ€åä¿®æ”¹:2015-10-20
 #include <graphics.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,8 +15,8 @@
 struct Window{
 	float xl;
 	float xr;
-	float yt;
-	float yb;
+	float top;
+	float bottom;
 }win;
 typedef struct Point{
 	float x;
@@ -33,9 +31,9 @@ int encode(Point p, int *code)
 		c |= LEFT;
 	else if (p.x > win.xr)
 		c |= RIGHT;
-	if (p.y > win.yt)
+	if (p.y < win.top)
 		c |= TOP;
-	else if (p.y < win.yb)
+	else if (p.y > win.bottom)
 		c |= BOTTOM;
 	*code = c;
 	return 0;
@@ -63,11 +61,11 @@ int C_S_LineClip(Point p1, Point p2)
 		}
 		else if ((BOTTOM & code) != 0)
 		{
-			p.set(p1.x + (p2.x - p1.x)*(win.yb - p1.y) / (p2.y - p1.y), win.yb);			
+			p.set(p1.x + (p2.x - p1.x)*(win.bottom - p1.y) / (p2.y - p1.y), win.bottom);			
 		}
 		else if ((TOP & code) != 0)
 		{
-			p.set(p1.x + (p2.x - p1.x)*(win.yt - p1.y) / (p2.y - p1.y), win.yt);
+			p.set(p1.x + (p2.x - p1.x)*(win.top - p1.y) / (p2.y - p1.y), win.top);
 		}
 		if (code == code1)
 		{
@@ -81,7 +79,7 @@ int C_S_LineClip(Point p1, Point p2)
 		}
 	}
 	setlinecolor(GREEN);	
-	line(p1.x+310, p1.y, p2.x+310, p2.y);//Æ½ÒÆ²¢»­Ïß
+	line(p1.x+310, p1.y, p2.x+310, p2.y);//å¹³ç§»å¹¶ç”»çº¿
 	return 0;
 }
 
@@ -100,19 +98,29 @@ int main()
 	{
 		p[i].set(150*cos(i*t) + 170,150*sin(i*t) + 170);
 	}
-	for (i = 0; i <= n - 2; i++) //»­×©Ê¯Í¼ĞÎ
+	for (i = 0; i <= n - 2; i++) //ç”»ç –çŸ³å›¾å½¢
 		for (j = i + 1; j <= n - 1; j++)
 			line(p[i].x, p[i].y, p[j].x, p[j].y); 
-	//»ñµÃ¾ØĞÎ´°¿ÚÁ½¶Ô½Ç¶¥µã×ø±ê
-	while (1)
+	//è·å¾—çŸ©å½¢çª—å£ä¸¤å¯¹è§’é¡¶ç‚¹åæ ‡
+	while (is_graph_open())
 	{
 		m1 = GetMouseMsg();
+		if (m1.uMsg == WM_CLOSE)
+		{
+			closegraph();
+			return 0;
+		}
 		if (m1.uMsg == WM_LBUTTONDOWN)
 			break;
 	}
-	while (1)
+	while (is_graph_open())
 	{
 		m2 = GetMouseMsg();
+		if (m2.uMsg == WM_CLOSE)
+		{
+			closegraph();
+			return 0;
+		}
 		if (m2.uMsg == WM_LBUTTONDOWN)
 			break;
 	}
@@ -128,16 +136,16 @@ int main()
 	}
 	if (m1.y <= m2.y)
 	{
-		win.yt = m2.y;
-		win.yb = m1.y;
+		win.top = m1.y;
+		win.bottom = m2.y;
 	}
 	else
 	{
-		win.yt = m1.y;
-		win.yb = m2.y;
+		win.top = m2.y;
+		win.bottom = m1.y;
 	}	
-	rectangle(win.xl, win.yt, win.xr, win.yb);
-	//É¾È¥¾ØĞÎ¿òÄÚµÄÏß
+	rectangle(win.xl, win.top, win.xr, win.bottom);
+	//åˆ å»çŸ©å½¢æ¡†å†…çš„çº¿
 	for (i = 0; i <= n - 2; i++)
 		for (j = i + 1; j <= n - 1; j++)
 			C_S_LineClip(p[i], p[j]);

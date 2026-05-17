@@ -1,0 +1,43 @@
+# CMake build output
+build/
+build-*/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+
+# Build products
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.res
+*.tlog
+*.lastbuildstate
+
+# Generated CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+Makefile
+*.ninja
+.ninja_*
+
+# Local temp files
+*.log
+*.tmp
+*.bak
+*.swp
+Thumbs.db
+Desktop.ini

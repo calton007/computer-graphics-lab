@@ -1,114 +1,51 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//³ÌĞòÃû³Æ£ºE2_1 »­Ö±Ïß  Êó±êµã»÷»­
-//±àÒë»·¾³£ºMicrosoft Visual Studio Ultimate 2013 EasyX_2014¶¬ÖÁ°æ
-//×÷Õß£ºÀî¹Û²¨<1206020120>
-//×îºóĞŞ¸Ä:2015-09-29
+//ç¨‹åºåç§°ï¼šE2_1 ç”»ç›´çº¿  é¼ æ ‡ç‚¹å‡»ç”»
+//æœ€åä¿®æ”¹:2015-09-29
 #include <graphics.h>      
 #include <conio.h>
 #include <stdio.h>
 void drawline(int x0, int y0, int x1, int y1, int color)
 {
-	int a, b, d, deltax, deltay;
-	double k;
-	a = y1 - y0;
-	b = x1 - x0;
-	deltax = 2 * b;
-	deltay = 2 * a;	
-	k = 1.0 * a / b;
-	putpixel(x0, y0, color);
-	if (b == 0)	//k²»´æÔÚµÄÊ±ºò£¨Ö±ÏßÆ½ĞĞÓÚyÖá£©
+	int dx = abs(x1 - x0);
+	int sx = x0 < x1 ? 1 : -1;
+	int dy = -abs(y1 - y0);
+	int sy = y0 < y1 ? 1 : -1;
+	int err = dx + dy;
+
+	while (true)
 	{
-		if (y0 > y1)
+		putpixel(x0, y0, color);
+		if (x0 == x1 && y0 == y1)
+			break;
+		int e2 = 2 * err;
+		if (e2 >= dy)
 		{
-			int t;
-			t = y0;
-			y0 = y1;
-			y1 = t;
+			err += dy;
+			x0 += sx;
 		}
-		while (y0 < y1)
+		if (e2 <= dx)
 		{
-			y0++;
-			putpixel(x0, y0, color);			
-		}
-	}
-	else
-	{
-		if (0 <= k && k <= 1)	//0<=k<=1
-		{
-			d = -b;
-			while (y0 != y1)
-			{
-				d += deltay;
-				if (d > 0)
-				{
-					y0++;
-					d -= deltax;
-				}
-				x0++;
-				putpixel(x0, y0, color);
-			}
-		}
-		else if (k > 1)		//k>1
-		{
-			d = -a;
-			while (y0 != y1)
-			{
-				d += deltax;
-				if (d > 0)
-				{
-					x0++;
-					d -= deltay;
-				}
-				y0++;
-				putpixel(x0, y0, color);
-			}
-		}
-		else if (k < 0 && k >= -1)	//-1<=k<0
-		{
-			d = -b;
-			while (x0 != x1)
-			{
-				d -= deltay;
-				if (d > 0)
-				{
-					y0--;
-					d -= deltax;
-				}
-				x0++;
-				putpixel(x0, y0, color);
-			}
-		}
-		else if (k < -1)		//k<-1;
-		{
-			d = -a;
-			while (y0 != y1)
-			{
-				d -= deltax;
-				if (d < 0)
-				{
-					x0++;
-					d -= deltay;
-				}
-				y0--;
-				putpixel(x0, y0, color);
-			}
+			err += dx;
+			y0 += sy;
 		}
 	}
 }
 int main()
 {
-	// ³õÊ¼»¯Í¼ĞÎ´°¿Ú
+	// åˆå§‹åŒ–å›¾å½¢çª—å£
 	initgraph(640, 480);
 	setbkcolor(WHITE);
 	cleardevice();
 	setlinecolor(BLUE);
-	MOUSEMSG m;		// ¶¨ÒåÊó±êÏûÏ¢
+	MOUSEMSG m;		// å®šä¹‰é¼ æ ‡æ¶ˆæ¯
 	int x0, y0, x1, y1, flag = 1;
-	while(true)
+	while(is_graph_open())
 	{
-		// »ñÈ¡Ò»ÌõÊó±êÏûÏ¢
+		// è·å–ä¸€æ¡é¼ æ ‡æ¶ˆæ¯
 		m = GetMouseMsg();
-		//¼ÇÂ¼Æğµã×ø±ê
+		if (m.uMsg == WM_CLOSE)
+			break;
+		//è®°å½•èµ·ç‚¹åæ ‡
 		if (flag==1 && m.uMsg == WM_LBUTTONDOWN)
 		{
 			x0 = m.x;
@@ -116,7 +53,7 @@ int main()
 			flag = 2; 
 			rectangle(x0 - 3, y0 - 3, x0 + 3, y0 + 3);
 		}
-		//¼ÇÂ¼ÖÕµã×ø±ê
+		//è®°å½•ç»ˆç‚¹åæ ‡
 		else if (flag == 2 && m.uMsg == WM_LBUTTONDOWN)
 		{
 			x1 = m.x;
@@ -126,7 +63,7 @@ int main()
 		}
 		if (flag == 0)
 		{
-			//½»»»ÆğµãºÍÖÕµã
+			//äº¤æ¢èµ·ç‚¹å’Œç»ˆç‚¹
 			if (x0 > x1)
 			{
 
@@ -144,8 +81,7 @@ int main()
 	}
 	
 
-	// ¹Ø±ÕÍ¼ĞÎ´°¿Ú
-	_getch();
+	// å…³é—­å›¾å½¢çª—å£
 	closegraph();	
 	return 0;
 }

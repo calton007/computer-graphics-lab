@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.16)
+project(ComputerGraphics LANGUAGES CXX)
+
+if(MSVC AND MSVC_VERSION LESS 1950)
+    message(FATAL_ERROR "This project requires Visual Studio 2026 / MSVC 14.50+")
+endif()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(graphics_compat INTERFACE)
+target_include_directories(graphics_compat INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(graphics_compat INTERFACE user32 gdi32)
+
+function(add_experiment target source)
+    add_executable(${target} ${source})
+    target_link_libraries(${target} PRIVATE graphics_compat)
+    target_compile_definitions(${target} PRIVATE UNICODE _UNICODE)
+    if(MSVC)
+        target_compile_options(${target} PRIVATE /utf-8)
+    endif()
+endfunction()
+
+add_experiment(E1_1 E1_1/E1_1.cpp)
+add_experiment(E1_2 E1_2/E1_2.cpp)
+add_experiment(E1_3 E1_3/E1_3.cpp)
+add_experiment(E2_1 E2_1/E2_1.cpp)
+add_experiment(E3_1 E3_1/E3_1.cpp)
+add_experiment(E4 E4/E4.cpp)
+add_experiment(E5 E5/E5.cpp)
+add_experiment(E6 E6/E6.cpp)
+add_experiment(E7 E7/E7.cpp)

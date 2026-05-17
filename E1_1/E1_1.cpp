@@ -1,13 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//³ÌĞòÃû³Æ£ºE1_1 Ò»±Ê»­
-//±àÒë»·¾³£ºMicrosoft Visual Studio Ultimate 2013 EasyX_2014¶¬ÖÁ°æ
-//×÷Õß£ºÀî¹Û²¨<1206020120>
-//×îºóĞŞ¸Ä:2015-09-22
+//ç¨‹åºåç§°ï¼šE1_1 ä¸€ç¬”ç”»
+//æœ€åä¿®æ”¹:2015-09-22
 #include <graphics.h>   
 #include <conio.h>
 int main()
 {
-	int pointAx = 160, pointAy = 240, pointBx = 480, pointBy = 240, x;	//A,BÎªÁ½¸ö¶¨µã
+	int pointAx = 160, pointAy = 240, pointBx = 480, pointBy = 240, x;	//A,Bä¸ºä¸¤ä¸ªå®šç‚¹
 	initgraph(640, 480);
 	setbkcolor(BLUE);
 	cleardevice();

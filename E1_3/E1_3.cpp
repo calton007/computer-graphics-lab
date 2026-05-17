@@ -1,8 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//³ÌĞòÃû³Æ£ºE1_3 »æÖÆÈı½ÇĞÎ²¢Ìî³ä
-//±àÒë»·¾³£ºMicrosoft Visual Studio Ultimate 2013 EasyX_2014¶¬ÖÁ°æ
-//×÷Õß£ºÀî¹Û²¨<1206020120>
-//×îºóĞŞ¸Ä:2015-09-22
+//ç¨‹åºåç§°ï¼šE1_3 ç»˜åˆ¶ä¸‰è§’å½¢å¹¶å¡«å……
+//æœ€åä¿®æ”¹:2015-09-22
 #include <graphics.h>      
 #include <conio.h>
 int main()
@@ -11,16 +9,16 @@ int main()
 	POINT pts2[] = { 0, 100, 20, 120, 220, 120, 128, 28, 113, 43, 170, 100, 0, 100 };
 	POINT pts3[] = { 76, 80, 128, 28, 220, 120, 228, 100, 128, 0, 48, 80, 76, 80 };
 	initgraph(640, 480);
-	setbkcolor(WHITE);		//ÉèÖÃ±³¾°É«Îª°×É«
-	cleardevice();			//±³¾°É«Ë¢ĞÂÆÁÄ»
-	setorigin(100, 100);	//ÉèÖÃÔ­µã×ø±ê
-	setaspectratio(2, 2);	//ÉèÖÃËõ·ÅÒò×Ó
-	setlinecolor(RED);		//±ß¿òÑÕÉ«ÉèÖÃ³ÉºìÉ«
-	setfillcolor(RED);		//Ìî³äÑÕÉ«ÉèÖÃ³ÉºìÉ«	
+	setbkcolor(WHITE);		//è®¾ç½®èƒŒæ™¯è‰²ä¸ºç™½è‰²
+	cleardevice();			//èƒŒæ™¯è‰²åˆ·æ–°å±å¹•
+	setorigin(100, 100);	//è®¾ç½®åŸç‚¹åæ ‡
+	setaspectratio(2, 2);	//è®¾ç½®ç¼©æ”¾å› å­
+	setlinecolor(RED);		//è¾¹æ¡†é¢œè‰²è®¾ç½®æˆçº¢è‰²
+	setfillcolor(RED);		//å¡«å……é¢œè‰²è®¾ç½®æˆçº¢è‰²	
 	fillpolygon(pts1, 7);
-	setfillcolor(YELLOW);	//Ìî³äÑÕÉ«ÉèÖÃ³É»ÆÉ«
+	setfillcolor(YELLOW);	//å¡«å……é¢œè‰²è®¾ç½®æˆé»„è‰²
 	fillpolygon(pts2, 7);
-	setfillcolor(BLUE);		//Ìî³äÑÕÉ«ÉèÖÃ³ÉÀ¶É«
+	setfillcolor(BLUE);		//å¡«å……é¢œè‰²è®¾ç½®æˆè“è‰²
 	fillpolygon(pts3, 7);
 	_getch();
 	closegraph();
